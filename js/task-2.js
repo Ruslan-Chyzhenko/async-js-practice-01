@@ -1,17 +1,88 @@
-// Main function
-function formatMessage(message, maxLength) {
-    if (message.length <= maxLength) {
-        return message;
+let someInterval = setInterval(() => {
+  console.log('виконалася операція з інтервалом');
+}, 500);
+
+clearInterval(someInterval);
+
+const numbers = [1, 2, 3, 4, 5];
+let doubledNumbers = [];
+
+numbers.forEach(number => {
+  doubledNumbers.push(number * 2);
+})
+
+console.log(doubledNumbers);
+
+doubledNumbers = numbers.map(number => {
+  return number * 2;
+})
+
+console.log(doubledNumbers);
+
+const sum = numbers.reduce((accumulator, currentValue) => {
+  return accumulator + currentValue;
+}, 0);
+
+console.log(sum);
+
+const found = numbers.find(number => {
+  return number > 3;
+});
+
+console.log(found);
+
+fetch('https://api.chucknorris.io/jokes/random')
+  .then(response => {
+    return response.json();
+  })
+  .then(data => {
+    console.log(data.value);
+  })
+
+//   Pizza
+
+const storeRoom = {
+  ingredients: ['гриби', 'салямі', 'бекон', 'курка', 'кукурудза', 'томати', 'ананаси', 'пармезан'],
+  souses: ['білий', 'червоний'],
+};
+
+let orderFulfillment = (ingredients, sous, production) => {
+  setTimeout(() => {
+    const missingIngredients = ingredients.filter(ingredient => {
+      return !storeRoom.ingredients.includes(ingredient);
+    });
+
+    if (missingIngredients.length) {
+      console.log(`Вибачте, але наразі у нас відсутні такі інградієнти: ${missingIngredients.join(', ')}.
+      Спробуйте використати інший набір продуктів.`);
+    } else {
+      const ingredientsToAdd = storeRoom.ingredients.filter(ingredient => {
+        return ingredients.includes(ingredient);
+      });
+      console.log(`Починаємо виготовлення піцци з таких продуктів: ${ingredientsToAdd.join(', ')}.
+       Для основи використовуємо ${sous} соус.`);
+
+      production();
     }
-    else {
-        return message.slice(0, maxLength) + "...";
-        }
+  }, 1000)
 }
 
-// Text calls
-console.log(formatMessage("Curabitur ligula sapien", 16)); // "Curabitur ligula..."
-console.log(formatMessage("Curabitur ligula sapien", 23)); // "Curabitur ligula sapien"
-console.log(formatMessage("Vestibulum facilisis purus nec", 20)); // "Vestibulum facilisis..."
-console.log(formatMessage("Vestibulum facilisis purus nec", 30)); // "Vestibulum facilisis purus nec"
-console.log(formatMessage("Nunc sed turpis a felis in nunc fringilla", 15)); // "Nunc sed turpis..."
-console.log(formatMessage("Nunc sed turpis a felis in nunc fringilla", 41)); // "Nunc sed turpis a felis in nunc fringilla"
+let preparePizza = () => {
+  setTimeout(() => {
+    console.log('Приготування інградієнтів для піцци завершено.');
+
+    setTimeout(() => {
+      console.log('На основу нанесено соус.');
+
+      setTimeout(() => {
+        console.log('Випікання завершено.');
+
+        setTimeout(() => {
+          console.log('Піццу порізано та видано клієнту. Смачного!');
+        }, 1000);
+      }, 3000);
+    }, 1000);
+  }, 2000);
+}
+
+orderFulfillment(['курка', 'бекон', 'томати', 'пармезан'], 'білий', preparePizza);
